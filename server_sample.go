@@ -10,7 +10,7 @@ import (
 
 	"github.com/labstack/echo/v5"
 	"github.com/its-ernest/echox/cache"
-	"github.com/its-ernest/echox/cache/store"
+	"github.com/its-ernest/echox/cache/internal/store"
 )
 
 func main() {
