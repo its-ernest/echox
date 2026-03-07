@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/its-ernest/echox/internal/store"
+	"github.com/its-ernest/echox/cache/internal/store"
 	"github.com/labstack/echo/v5"
 )
 

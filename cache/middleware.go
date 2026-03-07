@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/its-ernest/echox/internal"
+	"github.com/its-ernest/echox/cache/internal"
 	"github.com/labstack/echo/v5"
 )
 
