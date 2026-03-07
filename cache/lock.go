@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/its-ernest/echox/cache/internal/store"
+	"github.com/its-ernest/echox/internal/store"
 )
 
 // acquireLockWithTTL returns (locked bool, unlock function)

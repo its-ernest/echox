@@ -36,54 +36,55 @@ go get github.com/its-ernest/echox/cache
 package main
 
 import (
-	"context"
-	"log"
+	"fmt"
 	"net/http"
-	"os"
-	"os/signal"
 	"time"
 
 	"github.com/labstack/echo/v5"
-	"github.com/its-ernest/echox/cache"
-	"github.com/its-ernest/echox/store"
+	"github.com/its-ernest/echox/cache" 
+	"github.com/its-ernest/echox/internal/store"
 )
 
 func main() {
 	e := echo.New()
 
-	// Create MemoryStore
-	memStore := store.NewMemoryStore()
-
-	// Start periodic eviction
-	stopEvictor := make(chan struct{})
-	memStore.StartEvictor(1*time.Minute, stopEvictor)
-
-	// Add cache middleware
-	e.Use(cache.New(cache.Config{
-		Store:       memStore,
-		TTL:         2 * time.Minute,
-		MaxBodySize: 2 * 1024 * 1024, // 2MB
-	}))
-
-	// Example handler
-	e.GET("/news", func(c echo.Context) error {
-		body := []byte("Latest news content...")
-		return c.Blob(http.StatusOK, "text/plain", body)
+	// SIMPLE CUSTOM LOGGER
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c *echo.Context) error {
+			start := time.Now()
+			err := next(c)
+			stop := time.Now()
+			fmt.Printf("[%s] %d %s %s (%s)\n", 
+				stop.Format("15:04:05"),
+				c.Request().Method, 
+				c.Request().URL.Path,
+				stop.Sub(start),
+			)
+			return err
+		}
 	})
 
-	// Start server
-	go func() {
-		if err := e.Start(":8080"); err != nil {
-			log.Fatal(err)
-		}
-	}()
+	// Setup local store
+	memStore := store.NewMemoryStore()
 
-	// Graceful shutdown
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
-	close(stopEvictor)
-	e.Shutdown(context.Background())
+	// Apply your cache middleware
+	e.Use(cache.New(cache.Config{
+		Store: memStore,
+		TTL:   20 * time.Second,
+	}))
+
+	// Echo V5 Handler
+	e.GET("/test", func(c *echo.Context) error {
+		fmt.Println("  [HANDLER] Generating fresh content...")
+		timestamp := time.Now().Format(time.RFC3339Nano)
+		return c.String(http.StatusOK, fmt.Sprintf("Generated at: %s", timestamp))
+	})
+
+	// Start
+	fmt.Println("Starting Dev Server on :8080...")
+	if err := e.Start(":8080"); err != nil {
+		fmt.Printf("Server stopped: %v\n", err)
+	}
 }
 ```
 
@@ -143,7 +144,7 @@ func main() {
 
 * **Memory Usage:** `MemoryStore` is in-memory; consider limits for very large payloads.
 * **Concurrency:** Tested with high concurrent GET requests; stampede prevention enabled.
-* **Persistence:** [For multi-server deployments, replace `MemoryStore` with a distributed store (Redis, Memcached)](redis.md).
+* **Persistence:** [For multi-server deployments, replace `MemoryStore` with a distributed store (Redis, Memcached)](cache/redis.md).
 * **TTL Enforcement:** Lock TTL must match cache TTL strategy to prevent stale locks.
 * **Evictor Interval:** Adjust based on traffic, memory footprint, and TTLs.
 
