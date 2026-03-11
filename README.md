@@ -1,5 +1,9 @@
 # echox
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/its-ernest/echox.svg)](https://pkg.go.dev/github.com/its-ernest/echox)
+[![Go Report Card](https://goreportcard.com/badge/github.com/its-ernest/echox)](https://goreportcard.com/report/github.com/its-ernest/echox)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **High-performance middleware suite for the Echo v5 ecosystem.**
 
 `echox` is a collection of production-ready middlewares engineered specifically for Echo v5's struct-pointer architecture. By leveraging Go 1.24+ features and standard library interfaces, `echox` provides robust solutions for distributed caching, idempotency, and request lifecycle management.

@@ -19,7 +19,7 @@ func main() {
 			start := time.Now()
 			err := next(c)
 			stop := time.Now()
-			fmt.Printf("[%s] %d %s %s (%s)\n", 
+			fmt.Printf("[%s] %s %s (%s)\n", 
 				stop.Format("15:04:05"),
 				c.Request().Method, 
 				c.Request().URL.Path,

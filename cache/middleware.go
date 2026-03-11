@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/its-ernest/echox/internal"
-	"github.com/its-ernest/echox/internal/store" // Crucial for store.Entry
+	"github.com/its-ernest/echox/store"
 	"github.com/labstack/echo/v5"
 )
 
