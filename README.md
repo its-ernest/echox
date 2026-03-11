@@ -47,9 +47,9 @@ package main
 import (
 	"time"
 
-	"[github.com/labstack/echo/v5](https://github.com/labstack/echo/v5)"
-	"[github.com/its-ernest/echox/cache](https://github.com/its-ernest/echox/cache)"
-	"[github.com/its-ernest/echox/internal/store](https://github.com/its-ernest/echox/internal/store)"
+	"github.com/labstack/echo/v5"
+	"github.com/its-ernest/echox/cache"
+	"github.com/its-ernest/echox/store"
 )
 
 func main() {

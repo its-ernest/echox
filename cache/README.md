@@ -42,7 +42,7 @@ import (
 
 	"github.com/labstack/echo/v5"
 	"github.com/its-ernest/echox/cache" 
-	"github.com/its-ernest/echox/internal/store"
+	"github.com/its-ernest/echox/store"
 )
 
 func main() {
