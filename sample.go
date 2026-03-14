@@ -13,7 +13,7 @@ import (
 func main() {
 	e := echo.New()
 
-	// SIMPLE CUSTOM LOGGER
+	// MINI CUSTOM LOGGER
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c *echo.Context) error {
 			start := time.Now()
@@ -29,23 +29,22 @@ func main() {
 		}
 	})
 
-	// Setup local store
+	// setup local store
 	memStore := store.NewMemoryStore()
 
-	// Apply your cache middleware
+	// apply echox cache middleware
 	e.Use(cache.New(cache.Config{
 		Store: memStore,
 		TTL:   10 * time.Second,
 	}))
 
-	// Echo V5 Handler
+	// Echo V5 handler
 	e.GET("/test", func(c *echo.Context) error {
 		fmt.Println("  ↳ [HANDLER] Generating fresh content...")
 		timestamp := time.Now().Format(time.RFC3339Nano)
 		return c.String(http.StatusOK, fmt.Sprintf("Generated at: %s", timestamp))
 	})
 
-	// Start
 	fmt.Println("Starting Dev Server on :8080...")
 	if err := e.Start(":8080"); err != nil {
 		fmt.Printf("Server stopped: %v\n", err)

@@ -1,4 +1,4 @@
-module blog_api
+module otp-backend
 
 go 1.25.6
 

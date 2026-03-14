@@ -26,7 +26,6 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 | **`ratelimit`** | Traffic shaping & limiting | `Planned` | <i class="fas fa-hourglass-start"></i> Researching |
 
 
-
 ## <i class="fas fa-microchip"></i> Core Features
 
 * **<i class="fas fa-shield-alt"></i> Anti-Stampede Protection:** Atomic locking prevents "thundering herd" issues on cache misses.
@@ -39,36 +38,66 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 * **Go:** 1.24+
 * **Echo:** v5.0.0-beta.x or higher
 
-## <i class="fas fa-play-circle"></i> Quick Start (Cache)
+## MINI PROJECTS EXAMPLES: 
+
+* **OTP verification caching (MemoryStore)**: [_examples/cache/otp_code_verification](_examples/cache/otp_code_verification/README.md)
+
+* 
+
+## <i class="fas fa-play-circle"></i> Quick Start example (Cache)
 
 ```go
 package main
 
 import (
+	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/labstack/echo/v5"
-	"github.com/its-ernest/echox/cache"
+	"github.com/its-ernest/echox/cache" 
 	"github.com/its-ernest/echox/store"
 )
 
 func main() {
 	e := echo.New()
 
-	// 1. Initialize the storage backend
-	memStore := store.NewMemoryStore()
-
-	// 2. Register Cache Middleware
-	e.Use(cache.New(cache.Config{
-		Store: memStore,
-		TTL:   10 * time.Minute,
-	}))
-
-	e.GET("/data", func(c *echo.Context) error {
-		return c.String(200, "Cached in Echo v5")
+	// MINI CUSTOM LOGGER
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c *echo.Context) error {
+			start := time.Now()
+			err := next(c)
+			stop := time.Now()
+			fmt.Printf("[%s] %s %s (%s)\n", 
+				stop.Format("15:04:05"),
+				c.Request().Method, 
+				c.Request().URL.Path,
+				stop.Sub(start),
+			)
+			return err
+		}
 	})
 
-	e.Start(":8080")
+	// setup local store
+	memStore := store.NewMemoryStore()
+
+	// apply echox cache middleware
+	e.Use(cache.New(cache.Config{
+		Store: memStore,
+		TTL:   10 * time.Second,
+	}))
+
+	// Echo V5 handler
+	e.GET("/test", func(c *echo.Context) error {
+		fmt.Println("  ↳ [HANDLER] Generating fresh content...")
+		timestamp := time.Now().Format(time.RFC3339Nano)
+		return c.String(http.StatusOK, fmt.Sprintf("Generated at: %s", timestamp))
+	})
+
+	fmt.Println("Starting Dev Server on :8080...")
+	if err := e.Start(":8080"); err != nil {
+		fmt.Printf("Server stopped: %v\n", err)
+	}
 }
 ```
 
