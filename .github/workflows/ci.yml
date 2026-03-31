@@ -1,0 +1,17 @@
+name: CI Dagger Pipeline
+on: [push, pull_request]
+
+jobs:
+  test-and-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Run Dagger Pipeline
+        run: go run ./dagger/main.go
