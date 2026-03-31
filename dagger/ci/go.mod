@@ -1,4 +1,4 @@
-module test_dagger_main
+module dagger_ci
 
 go 1.25.6
 

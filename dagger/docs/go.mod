@@ -1,4 +1,4 @@
-module generate_dagger_docs
+module docs_generate
 
 go 1.25.6
 
