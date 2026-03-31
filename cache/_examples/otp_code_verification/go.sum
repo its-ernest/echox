@@ -1,0 +1,4 @@
+github.com/its-ernest/echox v0.1.0 h1:eawPgF/EpTy2HDX+GDgQRKoIPi7lYiY7GbT3a6mekLM=
+github.com/its-ernest/echox v0.1.0/go.mod h1:E0aX65aCFTLJ6D8nub+2fFlob1FeD4b6xxF8Mj2NIWU=
+github.com/labstack/echo/v5 v5.0.4 h1:ll3I/O8BifjMztj9dD1vx/peZQv8cR2CTUdQK6QxGGc=
+github.com/labstack/echo/v5 v5.0.4/go.mod h1:SyvlSdObGjRXeQfCCXW/sybkZdOOQZBmpKF0bvALaeo=
