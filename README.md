@@ -22,13 +22,13 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 | Module | Purpose | Status | Backend Support |
 | :--- | :--- | :--- | :--- |
 | **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory <br> <i class="fas fa-exclamation-triangle" style="color:orange"></i> Redis (Alpha) |
-| **[`echox/idempotency`](cache/README.md)** | Safe POST/PATCH retries | `In-Dev` | <i class="fas fa-vial"></i> Internal Testing |
-| **`ratelimit`** | Traffic shaping & limiting | `Planned` | <i class="fas fa-hourglass-start"></i> Researching |
+
+| **`abuse`** | API abuse detection | `Planned` | <i class="fas fa-hourglass-start"></i> Researching |
 
 
 ## <i class="fas fa-microchip"></i> Core Features
 
-* **<i class="fas fa-shield-alt"></i> Anti-Stampede Protection:** Atomic locking prevents "thundering herd" issues on cache misses.
+* **<i class="fas fa-shield-alt"></i> Anti-Stampede Protection:** Mutex locking prevents multiple requests from hitting actual API on cache misses, ensuring there is only one call to cache it.
 * **<i class="fas fa-exchange-alt"></i> HTTP/1.1 ETag Support:** Native validation of `If-None-Match` for bandwidth optimization.
 * **<i class="fas fa-database"></i> Pluggable Storage:** Unified `Store` interface allows sharing a single Redis/Memory instance across multiple middlewares.
 * **<i class="fas fa-code-branch"></i> Echo v5 Optimized:** Full support for `*echo.Context` and `slog` structured logging.
@@ -42,9 +42,9 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 
 * **OTP verification caching (MemoryStore)**: [_examples/cache/otp_code_verification](_examples/cache/otp_code_verification/README.md)
 
-* 
 
-## <i class="fas fa-play-circle"></i> Quick Start example (Cache)
+## <i class="fas fa-play-circle"></i> Quick Start examples
+### 1. Caching examples
 
 ```go
 package main
@@ -101,6 +101,43 @@ func main() {
 }
 ```
 
+### Abuse Detection examples
+```go
+import (
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/labstack/echo/v5"
+	"github.com/its-ernest/echox/cache" 
+	"github.com/its-ernest/echox/abuse"
+	"github.com/its-ernest/echox/store"
+)
+
+func main() {
+	e := echo.New()
+	// 1. Setup both stores
+	cacheStore := store.NewMemoryStore()
+	abuseStore := store.NewMemoryCounter() // returns the Counter interface
+
+	// 2. Apply Abuse detection first (like a mini firewall)
+	e.Use(abuse.New(abuse.Config{
+		Store:     abuseStore,
+		Threshold: 100,
+		Rules: []abuse.Rule{
+			{Path: "/.env", Score: 100},
+		},
+	}))
+
+	// 3. Apply Cache second
+	e.Use(cache.New(cache.Config{
+		Store: cacheStore,
+		TTL:   10 * time.Second,
+	}))
+	// rest of code...
+}
+```
+
 ##  License
 
-Distributed under the MIT License.
+under the MIT License.

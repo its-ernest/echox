@@ -3,6 +3,7 @@ package cache
 import (
 	"crypto/sha256"
 	"encoding/hex"
+
 	//"log"
 	"net/http"
 	"time"
@@ -76,7 +77,7 @@ func New(config Config) echo.MiddlewareFunc {
 					Body:   recorder.Body.Bytes(),
 				}
 
-				// CAST map to http.Header to use .Set()
+				// cast map to http.Header to use .Set()
 				entryHeader := http.Header(newEntry.Header)
 				entryHeader.Set("Etag", etag)
 				entryHeader.Set("X-Cache", "MISS")

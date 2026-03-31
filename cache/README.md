@@ -1,15 +1,7 @@
-# EchoX Cache Middleware
+# echox Cache Middleware
 
-A **high-performance, production-ready caching middleware** for [Echo](https://echo.labstack.com/) in Go, with:
-
-* In-memory cache store (`MemoryStore`)
-* TTL-aware locking to prevent cache stampedes
-* ETag support and HTTP 304 handling
-* Max body size protection
-* Automatic background eviction of expired entries
-* Optional custom cache key generation and skip logic
-
----
+A **high-performance, production-ready caching middleware** for [Echo](https://echo.labstack.com/) in Go.
+[→ View Full API Documentation](DOCS.md)
 
 ## Features
 
@@ -67,7 +59,7 @@ func main() {
 	// Setup local store
 	memStore := store.NewMemoryStore()
 
-	// Apply your cache middleware
+	// Apply cache middleware
 	e.Use(cache.New(cache.Config{
 		Store: memStore,
 		TTL:   20 * time.Second,
@@ -147,9 +139,3 @@ func main() {
 * **Persistence:** [For multi-server deployments, replace `MemoryStore` with a distributed store (Redis, Memcached)](cache/redis.md).
 * **TTL Enforcement:** Lock TTL must match cache TTL strategy to prevent stale locks.
 * **Evictor Interval:** Adjust based on traffic, memory footprint, and TTLs.
-
----
-
-## License
-
-MIT © 2026

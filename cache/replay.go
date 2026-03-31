@@ -8,7 +8,7 @@ import (
 )
 
 func replay(c *echo.Context, entry *store.Entry) error {
-	// CAST map to http.Header for .Get() capability
+	// 1.cast map to http.Header for .Get() capability
 	headers := http.Header(entry.Header)
 
 	clientETag := c.Request().Header.Get("If-None-Match")
@@ -26,7 +26,7 @@ func replay(c *echo.Context, entry *store.Entry) error {
 	}
 
 	c.Response().Header().Set("X-Cache", "HIT")
-	
+
 	// Ensure we provide a Content-Type or use the cached one
 	contentType := headers.Get("Content-Type")
 	if contentType == "" {
