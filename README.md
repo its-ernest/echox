@@ -14,14 +14,14 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 
 | Echo Framework | Recommended echox Version | Git Tag / Branch | Status |
 | :--- | :--- | :--- | :--- |
-| **v5.0.0-beta.x** | `v0.1.x` | `v5.0-legacy` | <i class="fas fa-archive"></i> Maintenance |
-| **v5.1.0+** | `v0.2.x` | `main` | <i class="fas fa-rocket"></i> Active |
+| **v5.0.0-beta.x** | `v0.0.x` | `v5.0.x`/ `main` | <i class="fas fa-archive"></i> Active |
+| **v5.1.0+** | `v0.1.x` | `v5.1.x` | <i class="fas fa-rocket"></i> Planned |
 
 ## <i class="fas fa-cubes"></i> Middleware Registry
 
 | Module | Purpose | Status | Backend Support |
 | :--- | :--- | :--- | :--- |
-| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory <br> <i class="fas fa-exclamation-triangle" style="color:orange"></i> Redis (Alpha) |
+| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> <i class="fas fa-exclamation-triangle" style="color:orange"></i> Redis (Alpha). |
 
 | **`abuse`** | API abuse detection | `Planned` | <i class="fas fa-hourglass-start"></i> Researching |
 
@@ -35,8 +35,8 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 
 ## <i class="fas fa-terminal"></i> Requirements
 
-* **Go:** 1.24+
-* **Echo:** v5.0.0-beta.x or higher
+* **Go:** 1.25+
+* **Echo:** v5.0.0 or higher
 
 ## MINI PROJECTS EXAMPLES: 
 
