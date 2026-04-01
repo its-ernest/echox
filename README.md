@@ -23,7 +23,7 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 
 | Module | Purpose | Status | Backend Support |
 | :--- | :--- | :--- | :--- |
-| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> Redis (`in progress`). |
+| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> <i class="fas fa-check-circle" style="color:green"></i> Redis. |
 | **[`echox/abuse`](abuse/README.md)** | API abuse detection | `Beta` | <i class="fas fa-hourglass-start"></i> Memory. <br> Redis (`in progress`). |
 
 
@@ -79,6 +79,58 @@ func main() {
 	e.Use(cache.New(cache.Config{
 		Store: memStore,
 		TTL:   10 * time.Second,
+	}))
+
+	// Echo V5 handler
+	e.GET("/test", func(c *echo.Context) error {
+		fmt.Println(" [HANDLER] Generating fresh content...")
+		timestamp := time.Now().Format(time.RFC3339Nano)
+		return c.String(http.StatusOK, fmt.Sprintf("Generated at: %s", timestamp))
+	})
+
+	fmt.Println("Starting Dev Server on :8080...")
+	if err := e.Start(":8080"); err != nil {
+		fmt.Printf("Server stopped: %v\n", err)
+	}
+}
+```
+
+### 2. Using Redis for Distributed Caching
+
+For production environments with multiple application instances, use RedisStore:
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/labstack/echo/v5"
+	"github.com/its-ernest/echox/cache" 
+	"github.com/its-ernest/echox/store"
+)
+
+func main() {
+	e := echo.New()
+
+	// setup Redis store for distributed caching
+	redisStore := store.NewRedisStore("localhost:6379")
+	defer redisStore.Close()
+
+	// or with custom options:
+	// redisStore := store.NewRedisStoreWithOptions(store.RedisStoreOptions{
+	// 	Addr:         "localhost:6379",
+	// 	PoolSize:     10,
+	// 	MinIdleConns: 5,
+	// })
+
+	// apply echox cache middleware
+	e.Use(cache.New(cache.Config{
+		Store:       redisStore,
+		TTL:         5 * time.Minute,
+		MaxBodySize: 1 * 1024 * 1024, // 1MB limit for Redis efficiency
 	}))
 
 	// Echo V5 handler
