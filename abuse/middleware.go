@@ -14,7 +14,13 @@ type (
 	// Rule defines the "heat" points added for specific path patterns.
 	// Pattern supports suffix wildcards like "/admin*".
 	Rule struct {
-		Path  string
+		// Path is the URL path to match (supports wildcards via Echo's path matching)
+		Path string
+
+		// Method is the HTTP method to match (GET, POST, etc.). Empty means match all.
+		Method string
+
+		// Score is the amount of *heat* to add when this rule matches
 		Score int
 	}
 
@@ -80,6 +86,12 @@ func New(config Config) echo.MiddlewareFunc {
 			requestPath := c.Request().URL.Path
 			penalty := 0
 			for _, rule := range config.Rules {
+
+				// check and match exact request method if any is defined in rule
+				if rule.Method != "" && rule.Method != c.Request().Method {
+					continue
+				}
+
 				if matchPath(rule.Path, requestPath) {
 					penalty += rule.Score
 				}

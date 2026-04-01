@@ -12,8 +12,14 @@ func ExampleNew() {
 	e.Use(abuse.New(abuse.Config{
 		Threshold: 100,
 		Rules: []abuse.Rule{
+			// immediate ban for ANY attempt on .env
 			{Path: "/.env", Score: 100},
-			{Path: "/api/v1/*", Score: 5},
+
+			// heavy score only for POST requests to login (brute force protection)
+			{Path: "/api/v1/login", Method: "POST", Score: 20},
+
+			// light score for general API exploration
+			{Path: "/api/v1/*", Method: "GET", Score: 2},
 		},
 	}))
 }

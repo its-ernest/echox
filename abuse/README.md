@@ -24,6 +24,10 @@ Unlike standard rate-limiters that reset every minute, think of this like a **he
 ## Installation
 
 ```bash
+# since this is a new push
+GOPROXY=direct go get github.com/its-ernest/echox/abuse@v0.0.1
+
+# in the long run
 go get github.com/its-ernest/echox/abuse
 ```
 
@@ -57,7 +61,7 @@ func main() {
 			{Path: "/.env", Score: 100},       // Instant ban
 			{Path: "/.git*", Score: 100},      // Instant ban
 			{Path: "/wp-admin*", Score: 50},    // Two hits and the IP is banned
-			{Path: "/api/v1/login", Score: 5},  // Penalize brute-force attempts
+			{Path: "/api/v1/login", Method: "POST", Score: 5},  // Penalize brute-force attempts
 		},
 	}))
 
