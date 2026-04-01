@@ -21,8 +21,8 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 
 | Module | Purpose | Status | Backend Support |
 | :--- | :--- | :--- | :--- |
-| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> <i class="fas fa-exclamation-triangle" style="color:orange"></i> Redis (`in progress`). |
-| **[`abuse`](abuse/README.md)** | API abuse detection | `Beta` | <i class="fas fa-hourglass-start"></i> Researching |
+| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> Redis (`in progress`). |
+| **[`abuse`](abuse/README.md)** | API abuse detection | `Beta` | <i class="fas fa-hourglass-start"></i> Memory. <br> Redis (`in progress`). |
 
 
 ## <i class="fas fa-terminal"></i> Requirements
