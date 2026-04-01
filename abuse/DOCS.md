@@ -51,8 +51,14 @@ e := echo.New()
 e.Use(abuse.New(abuse.Config{
 	Threshold: 100,
 	Rules: []abuse.Rule{
+		// immediate ban for ANY attempt on .env
 		{Path: "/.env", Score: 100},
-		{Path: "/api/v1/*", Score: 5},
+
+		// heavy score only for POST requests to login (brute force protection)
+		{Path: "/api/v1/login", Method: "POST", Score: 20},
+
+		// light score for general API exploration
+		{Path: "/api/v1/*", Method: "GET", Score: 2},
 	},
 }))
 ```
@@ -84,7 +90,13 @@ Rule defines the "heat" points added for specific path patterns. Pattern support
 
 ```go
 type Rule struct {
-    Path  string
+    // Path is the URL path to match (supports wildcards via Echo's path matching)
+    Path string
+
+    // Method is the HTTP method to match (GET, POST, etc.). Empty means match all.
+    Method string
+
+    // Score is the amount of *heat* to add when this rule matches
     Score int
 }
 ```

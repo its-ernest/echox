@@ -2,6 +2,8 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/its-ernest/echox.svg)](https://pkg.go.dev/github.com/its-ernest/echox)
 [![Go Report Card](https://goreportcard.com/badge/github.com/its-ernest/echox)](https://goreportcard.com/report/github.com/its-ernest/echox)
+[![Dagger Docs](https://github.com/its-ernest/echox/actions/workflows/docs.yml/badge.svg)](https://github.com/its-ernest/echox/actions/workflows/docs.yml)
+[![Build Status](https://github.com/its-ernest/echox/actions/workflows/go.yml/badge.svg)](https://github.com/its-ernest/echox/actions/workflows/go.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **High-performance middleware suite for the Echo v5 ecosystem.**
@@ -108,25 +110,29 @@ import (
 
 func main() {
 	e := echo.New()
-	// 1. Setup both stores
-	cacheStore := store.NewMemoryStore()
-	abuseStore := store.NewMemoryCounter() // returns the Counter interface
 
-	// 2. Apply Abuse detection first (like a mini firewall)
+	abuseStore := store.NewMemoryCounter()
+	// Instant-ban on sensitive files, warn on API spam
 	e.Use(abuse.New(abuse.Config{
 		Store:     abuseStore,
 		Threshold: 100,
 		Rules: []abuse.Rule{
+			// immediate ban for ANY attempt on .env
 			{Path: "/.env", Score: 100},
+
+			// heavy score only for POST requests to login (brute force protection)
+			{Path: "/api/v1/login", Method: "POST", Score: 20},
+
+			// light score for general API exploration
+			{Path: "/api/v1/*", Method: "GET", Score: 2},
+			{Path: "/api/v1/users", Method: "PUT", Score: 20},
 		},
 	}))
 
-	// 3. Apply Cache second
-	e.Use(cache.New(cache.Config{
-		Store: cacheStore,
-		TTL:   10 * time.Second,
-	}))
-	// rest of code...
+	fmt.Println("Starting Dev Server on :8080...")
+	if err := e.Start(":8080"); err != nil {
+		fmt.Printf("Server stopped: %v\n", err)
+	}
 }
 ```
 
