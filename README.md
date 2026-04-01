@@ -23,8 +23,8 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 
 | Module | Purpose | Status | Backend Support |
 | :--- | :--- | :--- | :--- |
-| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> Redis (`in progress`). |
-| **[`echox/abuse`](abuse/README.md)** | API abuse detection | `Beta` | <i class="fas fa-hourglass-start"></i> Memory. <br> Redis (`in progress`). |
+| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> <i class="fas fa-check-circle" style="color:green"></i> Redis. |
+| **[`echox/abuse`](abuse/README.md)** | API abuse detection | `Beta` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> <i class="fas fa-check-circle" style="color:green"></i> Redis. |
 
 
 ## <i class="fas fa-terminal"></i> Requirements
@@ -35,6 +35,7 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 ## MINI PROJECTS EXAMPLES: 
 
 * **OTP verification caching (MemoryStore)**: [_examples/cache/otp_code_verification](_examples/cache/otp_code_verification/README.md)
+* **Redis distributed caching**: [_examples/cache/redis_cache](_examples/cache/redis_cache/README.md)
 
 
 ## <i class="fas fa-play-circle"></i> Quick Start examples
@@ -95,7 +96,58 @@ func main() {
 }
 ```
 
-### Abuse Detection examples
+### 2. Redis Caching (Production)
+
+For production environments with multiple application nodes, use Redis for distributed caching:
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/labstack/echo/v5"
+	"github.com/its-ernest/echox/cache"
+	"github.com/its-ernest/echox/store"
+)
+
+func main() {
+	e := echo.New()
+
+	// Use Redis for distributed caching across multiple instances
+	redisStore := store.NewRedisStore("localhost:6379")
+
+	// For production with custom configuration:
+	// redisStore := store.NewRedisStoreWithConfig(store.RedisStoreConfig{
+	//     Addr:         "redis-cluster.example.com:6379",
+	//     Password:     "your-password",
+	//     DB:           0,
+	//     PoolSize:     50,
+	//     MinIdleConns: 10,
+	// })
+
+	// apply echox cache middleware with Redis backend
+	e.Use(cache.New(cache.Config{
+		Store: redisStore,
+		TTL:   5 * time.Minute,
+	}))
+
+	// Echo V5 handler
+	e.GET("/api/data", func(c *echo.Context) error {
+		fmt.Println(" [HANDLER] Generating fresh content...")
+		return c.String(http.StatusOK, "Cached response")
+	})
+
+	fmt.Println("Starting Production Server on :8080...")
+	if err := e.Start(":8080"); err != nil {
+		fmt.Printf("Server stopped: %v\n", err)
+	}
+}
+```
+
+### 3. Abuse Detection examples
 ```go
 import (
 	"fmt"

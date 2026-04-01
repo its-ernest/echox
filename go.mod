@@ -5,6 +5,7 @@ go 1.25.6
 require (
 	dagger.io/dagger v0.20.3
 	github.com/labstack/echo/v5 v5.0.4
+	github.com/redis/go-redis/v9 v9.7.0
 	github.com/stretchr/testify v1.11.1
 )
 
