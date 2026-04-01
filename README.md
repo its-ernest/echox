@@ -21,16 +21,9 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 
 | Module | Purpose | Status | Backend Support |
 | :--- | :--- | :--- | :--- |
-| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> <i class="fas fa-exclamation-triangle" style="color:orange"></i> Redis (Alpha). |
-| **[`abuse`](abuse/README.md)** | API abuse detection | `Planned` | <i class="fas fa-hourglass-start"></i> Researching |
+| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> <i class="fas fa-exclamation-triangle" style="color:orange"></i> Redis (`in progress`). |
+| **[`abuse`](abuse/README.md)** | API abuse detection | `Beta` | <i class="fas fa-hourglass-start"></i> Researching |
 
-
-## <i class="fas fa-microchip"></i> Core Features
-
-* **<i class="fas fa-shield-alt"></i> Anti-Stampede Protection:** Mutex locking prevents multiple requests from hitting actual API on cache misses, ensuring there is only one call to cache it.
-* **<i class="fas fa-exchange-alt"></i> HTTP/1.1 ETag Support:** Native validation of `If-None-Match` for bandwidth optimization.
-* **<i class="fas fa-database"></i> Pluggable Storage:** Unified `Store` interface allows sharing a single Redis/Memory instance across multiple middlewares.
-* **<i class="fas fa-code-branch"></i> Echo v5 Optimized:** Full support for `*echo.Context` and `slog` structured logging.
 
 ## <i class="fas fa-terminal"></i> Requirements
 
