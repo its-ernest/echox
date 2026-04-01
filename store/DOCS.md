@@ -6,6 +6,8 @@
 import "github.com/its-ernest/echox/store"
 ```
 
+Package store provides the underlying persistence and locking mechanisms for the echox middleware suite.
+
 ## Index
 
 - [Variables](<#variables>)
@@ -29,7 +31,14 @@ import "github.com/its-ernest/echox/store"
 
 ```go
 var (
-    ErrNotFound   = errors.New("store: item not found")
+    // ErrNotFound is returned when a requested key does not exist in the store
+    // or has already expired. Middleware should typically handle this by
+    // proceeding to the next handler to fetch fresh data.
+    ErrNotFound = errors.New("store: item not found")
+
+    // ErrLockFailed is returned when a distributed lock cannot be acquired
+    // within the allowed timeframe or because it is already held by another
+    // process. This is primarily used by the idempotency middleware.
     ErrLockFailed = errors.New("store: could not acquire lock")
 )
 ```
@@ -65,7 +74,7 @@ func NewMemoryCounter() Counter
 <a name="Entry"></a>
 ## type Entry
 
-Entry represents the data we actually persist
+Entry represents the data that actually persists
 
 ```go
 type Entry struct {
@@ -78,7 +87,7 @@ type Entry struct {
 <a name="MemoryStore"></a>
 ## type MemoryStore
 
-
+MemoryStore is an in\-memory implementation of the Store interface. It utilizes sync.Map for thread\-safe data operations and distributed\-style locking simulations, making it ideal for single\-instance applications.
 
 ```go
 type MemoryStore struct {
@@ -93,7 +102,7 @@ type MemoryStore struct {
 func NewMemoryStore() *MemoryStore
 ```
 
-
+NewMemoryStore initializes and returns a new pointer to a MemoryStore.
 
 <a name="MemoryStore.Delete"></a>
 ### func \(\*MemoryStore\) Delete
@@ -102,7 +111,7 @@ func NewMemoryStore() *MemoryStore
 func (m *MemoryStore) Delete(_ context.Context, key string) error
 ```
 
-
+Delete removes a specific entry from the memory store immediately.
 
 <a name="MemoryStore.Get"></a>
 ### func \(\*MemoryStore\) Get
@@ -111,7 +120,7 @@ func (m *MemoryStore) Delete(_ context.Context, key string) error
 func (m *MemoryStore) Get(_ context.Context, key string) (*Entry, error)
 ```
 
-
+Get retrieves a cached Entry by its key. If the entry exists but has expired, it is deleted and ErrNotFound is returned.
 
 <a name="MemoryStore.Lock"></a>
 ### func \(\*MemoryStore\) Lock
@@ -120,7 +129,7 @@ func (m *MemoryStore) Get(_ context.Context, key string) (*Entry, error)
 func (m *MemoryStore) Lock(_ context.Context, key string, ttl time.Duration) (bool, error)
 ```
 
-
+Lock attempts to acquire a non\-blocking lock for a given key. It returns true if the lock was successfully acquired or if a previous lock has already expired. This is essential for preventing "thundering herd" issues in idempotency middleware.
 
 <a name="MemoryStore.Save"></a>
 ### func \(\*MemoryStore\) Save
@@ -129,7 +138,7 @@ func (m *MemoryStore) Lock(_ context.Context, key string, ttl time.Duration) (bo
 func (m *MemoryStore) Save(_ context.Context, key string, entry *Entry, ttl time.Duration) error
 ```
 
-
+Save persists an Entry into memory with a specific time\-to\-live \(TTL\).
 
 <a name="MemoryStore.StartEvictor"></a>
 ### func \(\*MemoryStore\) StartEvictor
@@ -138,7 +147,7 @@ func (m *MemoryStore) Save(_ context.Context, key string, entry *Entry, ttl time
 func (m *MemoryStore) StartEvictor(interval time.Duration, stop <-chan struct{})
 ```
 
-
+StartEvictor launches a background goroutine that periodically scans the store and removes expired entries. The goroutine stops when the provided stop channel is closed.
 
 <a name="MemoryStore.Unlock"></a>
 ### func \(\*MemoryStore\) Unlock
@@ -147,7 +156,7 @@ func (m *MemoryStore) StartEvictor(interval time.Duration, stop <-chan struct{})
 func (m *MemoryStore) Unlock(_ context.Context, key string) error
 ```
 
-
+Unlock releases the lock for the given key, allowing other processes to acquire it.
 
 <a name="Store"></a>
 ## type Store

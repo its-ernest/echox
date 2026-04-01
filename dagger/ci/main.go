@@ -17,12 +17,13 @@ func main() {
 	defer client.Close()
 
 	// 1. Get the project source
-	src := client.Host().Directory(".")
+	src := client.Host().Directory(".", dagger.HostDirectoryOpts{
+		Exclude: []string{".git", "bin", "obj"},
+	})
 
 	// 2. Define the Go execution environment
-	// We use the latest stable Go image
 	gopher := client.Container().
-		From("golang:1.22-bookworm").
+		From("golang:1.25-bookworm").
 		WithDirectory("/src", src).
 		WithWorkdir("/src").
 		// Cache the Go modules to speed up subsequent runs
@@ -31,6 +32,7 @@ func main() {
 	// 3. Run the Tests
 	fmt.Println("Running unit tests...")
 	_, err = gopher.
+		//WithExec([]string{"go", "test", "-v", "-race", "./..."}).
 		WithExec([]string{"go", "test", "-v", "-race", "./..."}).
 		Sync(ctx)
 
