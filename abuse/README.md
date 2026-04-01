@@ -25,7 +25,7 @@ Unlike standard rate-limiters that reset every minute, think of this like a **he
 
 ```bash
 # since this is a new push
-GOPROXY=direct go get github.com/its-ernest/echox/abuse@v0.0.1
+GOPROXY=direct go get github.com/its-ernest/echox/abuse@v0.0.2
 
 # in the long run
 go get github.com/its-ernest/echox/abuse
