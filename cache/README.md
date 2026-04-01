@@ -67,7 +67,7 @@ func main() {
 
 	// Echo V5 Handler
 	e.GET("/test", func(c *echo.Context) error {
-		fmt.Println("  [HANDLER] Generating fresh content...")
+		fmt.Println(" [HANDLER] Generating fresh content...")
 		timestamp := time.Now().Format(time.RFC3339Nano)
 		return c.String(http.StatusOK, fmt.Sprintf("Generated at: %s", timestamp))
 	})
@@ -132,7 +132,7 @@ func main() {
 
 ---
 
-## Production Considerations
+## Recommended practices:
 
 * **Memory Usage:** `MemoryStore` is in-memory; consider limits for very large payloads.
 * **Concurrency:** Tested with high concurrent GET requests; stampede prevention enabled.

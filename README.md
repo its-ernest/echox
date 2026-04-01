@@ -81,7 +81,7 @@ func main() {
 
 	// Echo V5 handler
 	e.GET("/test", func(c *echo.Context) error {
-		fmt.Println("  ↳ [HANDLER] Generating fresh content...")
+		fmt.Println(" [HANDLER] Generating fresh content...")
 		timestamp := time.Now().Format(time.RFC3339Nano)
 		return c.String(http.StatusOK, fmt.Sprintf("Generated at: %s", timestamp))
 	})

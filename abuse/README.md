@@ -1,11 +1,11 @@
 # echox Abuse Middleware
 
-[![Docs](https://img.shields.io/badge/docs-api_reference-blue?style=flat-square)](./README.md)
+[![Docs](https://img.shields.io/badge/docs-api_reference-blue?style=flat-square)](./DOCS.md)
 [![Status](https://img.shields.io/badge/status-production--beta-cyan?style=flat-square)](#)
 
-A **smart behavioral firewall** for [Echo v5](https://echo.labstack.com/). Instead of simple rate-limiting, `echox/abuse` tracks client reputation using a **Heat** scoring system to identify and neutralize scrapers, scanners, and malicious actors.
+A **smart behavioral firewall** for [Echo v5](https://echo.labstack.com/). `echox/abuse` tracks client reputation using a **Heat** scoring system to identify and neutralize scrapers, scanners, and malicious actors.
 
-[**→ View Technical API Reference**](./README.md)
+[**→ View API eference**](./DOCS.md)
 
 ---
 
@@ -15,7 +15,7 @@ Unlike standard rate-limiters that reset every minute, think of this like a **he
 
 1.  **Passive Monitoring:** Every request is checked against a list of `Rules`.
 2.  **Penalty Scoring:** If a client hits a sensitive path (e.g., `/.env` or `/phpmyadmin`), their "Heat" score increases.
-3.  **The Tarpit (Optional):** As the score approaches the threshold, the middleware artificially delays responses, wasting the attacker's time and resources.
+3.  **Tarpit delay (Optional):** As the score approaches the threshold, the middleware artificially delays responses, wasting the attacker's time and resources.
 4.  **The Block:** Once the `Threshold` is met, all further requests are rejected with a `403 Forbidden` until the `Cooldown` period expires.
 
 
@@ -51,7 +51,7 @@ func main() {
 	e.Use(abuse.New(abuse.Config{
 		Store:     abuseStore,
 		Threshold: 100,        // Max heat before a total ban
-		Cooldown:  1 * time.Hour, 
+		Cooldown:  1 * time.Hour, // Until forgetting about a ban
 		EnableDelay: true,     // Slow down warm IPs
 		Rules: []abuse.Rule{
 			{Path: "/.env", Score: 100},       // Instant ban
@@ -80,7 +80,7 @@ func main() {
 
 ---
 
-## The Tarpit Effect
+## delay effect
 
 When `EnableDelay` is active, the middleware calculates a sleep duration based on the current score:
 $$Delay = CurrentScore \times 10ms$$
