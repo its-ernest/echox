@@ -2,7 +2,7 @@ name: CI Dagger Pipeline
 on: [push, pull_request]
 
 jobs:
-  test-and-docs:
+  go-testing:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
