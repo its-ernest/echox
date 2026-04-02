@@ -2,7 +2,7 @@ name: Dagger Docs
 on: [push, pull_request]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   docs:
@@ -15,10 +15,13 @@ jobs:
         with:
           go-version: '1.25'
 
-      - name: Run Dagger
+      - name: Run Dagger Docs Generator
         run: go run ./dagger/docs/main.go
         
-      - name: Auto Commit
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "docs: update via dagger"
+      - name: Verify Documentation is Up-to-Date
+        run: |
+          if ! git diff --exit-code; then
+            echo "::error::Documentation is out of date!"
+            echo "Please run 'go run ./dagger/docs/main.go' locally and commit the changes."
+            exit 1
+          fi
