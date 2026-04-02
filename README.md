@@ -10,6 +10,18 @@
 
 `echox` is a collection of production-ready middlewares engineered specifically for Echo v5's struct-pointer architecture. By leveraging Go 1.24+ features and standard library interfaces, `echox` provides robust solutions for distributed caching, idempotency, and request lifecycle management.
 
+## Installation
+
+```bash
+# latest versions
+GOPROXY=direct go get github.com/its-ernest/echox@latest
+GOPROXY=direct go get github.com/its-ernest/echox/cache@latest
+GOPROXY=direct go get github.com/its-ernest/echox/abuse@latest
+
+# in the long run
+go get github.com/its-ernest/echox/cache
+```
+
 ## <i class="fas fa-layer-group"></i> Framework Compatibility
 
 To ensure stability across the evolving Echo v5 landscape, we maintain specific versions mapped to upstream Echo releases.
