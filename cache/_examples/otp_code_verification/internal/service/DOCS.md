@@ -15,7 +15,7 @@ import "otp-backend/internal/service"
 
 
 <a name="AuthService"></a>
-## type [AuthService](<https://github.com/its-ernest/echox/blob/main/cache/_examples/otp_code_verification/internal/service/auth_service.go#L14-L16>)
+## type AuthService
 
 
 
@@ -26,7 +26,7 @@ type AuthService struct {
 ```
 
 <a name="NewAuthService"></a>
-### func [NewAuthService](<https://github.com/its-ernest/echox/blob/main/cache/_examples/otp_code_verification/internal/service/auth_service.go#L18>)
+### func NewAuthService
 
 ```go
 func NewAuthService(s store.Store) *AuthService
@@ -35,7 +35,7 @@ func NewAuthService(s store.Store) *AuthService
 
 
 <a name="AuthService.RequestOTP"></a>
-### func \(\*AuthService\) [RequestOTP](<https://github.com/its-ernest/echox/blob/main/cache/_examples/otp_code_verification/internal/service/auth_service.go#L22>)
+### func \(\*AuthService\) RequestOTP
 
 ```go
 func (s *AuthService) RequestOTP(ctx context.Context, phone string) error
@@ -44,7 +44,7 @@ func (s *AuthService) RequestOTP(ctx context.Context, phone string) error
 
 
 <a name="AuthService.VerifyOTP"></a>
-### func \(\*AuthService\) [VerifyOTP](<https://github.com/its-ernest/echox/blob/main/cache/_examples/otp_code_verification/internal/service/auth_service.go#L34>)
+### func \(\*AuthService\) VerifyOTP
 
 ```go
 func (s *AuthService) VerifyOTP(ctx context.Context, phone, code string) error

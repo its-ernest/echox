@@ -54,7 +54,7 @@ var (
 ```
 
 <a name="Counter"></a>
-## type [Counter](<https://github.com/its-ernest/echox/blob/main/store/store.go#L47-L57>)
+## type Counter
 
 Counter defines a simpler interface for numeric tracking \(Abuse, Rate Limiting\)
 
@@ -73,7 +73,7 @@ type Counter interface {
 ```
 
 <a name="NewMemoryCounter"></a>
-### func [NewMemoryCounter](<https://github.com/its-ernest/echox/blob/main/store/mem_counter.go#L15>)
+### func NewMemoryCounter
 
 ```go
 func NewMemoryCounter() Counter
@@ -82,7 +82,7 @@ func NewMemoryCounter() Counter
 
 
 <a name="Entry"></a>
-## type [Entry](<https://github.com/its-ernest/echox/blob/main/store/store.go#L22-L26>)
+## type Entry
 
 Entry represents the data that actually persists
 
@@ -95,7 +95,7 @@ type Entry struct {
 ```
 
 <a name="MemoryStore"></a>
-## type [MemoryStore](<https://github.com/its-ernest/echox/blob/main/store/memory.go#L20-L23>)
+## type MemoryStore
 
 MemoryStore is an in\-memory implementation of the Store interface. It utilizes sync.Map for thread\-safe data operations and distributed\-style locking simulations, making it ideal for single\-instance applications.
 
@@ -106,7 +106,7 @@ type MemoryStore struct {
 ```
 
 <a name="NewMemoryStore"></a>
-### func [NewMemoryStore](<https://github.com/its-ernest/echox/blob/main/store/memory.go#L32>)
+### func NewMemoryStore
 
 ```go
 func NewMemoryStore() *MemoryStore
@@ -115,7 +115,7 @@ func NewMemoryStore() *MemoryStore
 NewMemoryStore initializes and returns a new pointer to a MemoryStore.
 
 <a name="MemoryStore.Delete"></a>
-### func \(\*MemoryStore\) [Delete](<https://github.com/its-ernest/echox/blob/main/store/memory.go#L62>)
+### func \(\*MemoryStore\) Delete
 
 ```go
 func (m *MemoryStore) Delete(_ context.Context, key string) error
@@ -124,7 +124,7 @@ func (m *MemoryStore) Delete(_ context.Context, key string) error
 Delete removes a specific entry from the memory store immediately.
 
 <a name="MemoryStore.Get"></a>
-### func \(\*MemoryStore\) [Get](<https://github.com/its-ernest/echox/blob/main/store/memory.go#L38>)
+### func \(\*MemoryStore\) Get
 
 ```go
 func (m *MemoryStore) Get(_ context.Context, key string) (*Entry, error)
@@ -133,7 +133,7 @@ func (m *MemoryStore) Get(_ context.Context, key string) (*Entry, error)
 Get retrieves a cached Entry by its key. If the entry exists but has expired, it is deleted and ErrNotFound is returned.
 
 <a name="MemoryStore.Lock"></a>
-### func \(\*MemoryStore\) [Lock](<https://github.com/its-ernest/echox/blob/main/store/memory.go#L71>)
+### func \(\*MemoryStore\) Lock
 
 ```go
 func (m *MemoryStore) Lock(_ context.Context, key string, ttl time.Duration) (bool, error)
@@ -142,7 +142,7 @@ func (m *MemoryStore) Lock(_ context.Context, key string, ttl time.Duration) (bo
 Lock attempts to acquire a non\-blocking lock for a given key. It returns true if the lock was successfully acquired or if a previous lock has already expired. This is essential for preventing "thundering herd" issues in idempotency middleware.
 
 <a name="MemoryStore.Save"></a>
-### func \(\*MemoryStore\) [Save](<https://github.com/its-ernest/echox/blob/main/store/memory.go#L53>)
+### func \(\*MemoryStore\) Save
 
 ```go
 func (m *MemoryStore) Save(_ context.Context, key string, entry *Entry, ttl time.Duration) error
@@ -151,7 +151,7 @@ func (m *MemoryStore) Save(_ context.Context, key string, entry *Entry, ttl time
 Save persists an Entry into memory with a specific time\-to\-live \(TTL\).
 
 <a name="MemoryStore.StartEvictor"></a>
-### func \(\*MemoryStore\) [StartEvictor](<https://github.com/its-ernest/echox/blob/main/store/memory.go#L101>)
+### func \(\*MemoryStore\) StartEvictor
 
 ```go
 func (m *MemoryStore) StartEvictor(interval time.Duration, stop <-chan struct{})
@@ -160,7 +160,7 @@ func (m *MemoryStore) StartEvictor(interval time.Duration, stop <-chan struct{})
 StartEvictor launches a background goroutine that periodically scans the store and removes expired entries. The goroutine stops when the provided stop channel is closed.
 
 <a name="MemoryStore.Unlock"></a>
-### func \(\*MemoryStore\) [Unlock](<https://github.com/its-ernest/echox/blob/main/store/memory.go#L93>)
+### func \(\*MemoryStore\) Unlock
 
 ```go
 func (m *MemoryStore) Unlock(_ context.Context, key string) error
@@ -169,7 +169,7 @@ func (m *MemoryStore) Unlock(_ context.Context, key string) error
 Unlock releases the lock for the given key, allowing other processes to acquire it.
 
 <a name="RedisStore"></a>
-## type [RedisStore](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L14-L16>)
+## type RedisStore
 
 RedisStore implements the Store interface using Redis as the backend. It is suitable for distributed production environments where multiple application instances need to share a consistent cache.
 
@@ -180,7 +180,7 @@ type RedisStore struct {
 ```
 
 <a name="NewRedisStore"></a>
-### func [NewRedisStore](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L40>)
+### func NewRedisStore
 
 ```go
 func NewRedisStore(addr string) *RedisStore
@@ -189,7 +189,7 @@ func NewRedisStore(addr string) *RedisStore
 NewRedisStore creates a new RedisStore with the provided address. This is a convenience constructor for simple setups.
 
 <a name="NewRedisStoreWithOptions"></a>
-### func [NewRedisStoreWithOptions](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L49>)
+### func NewRedisStoreWithOptions
 
 ```go
 func NewRedisStoreWithOptions(opts RedisStoreOptions) *RedisStore
@@ -198,7 +198,7 @@ func NewRedisStoreWithOptions(opts RedisStoreOptions) *RedisStore
 NewRedisStoreWithOptions creates a new RedisStore with custom configuration.
 
 <a name="RedisStore.Close"></a>
-### func \(\*RedisStore\) [Close](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L108>)
+### func \(\*RedisStore\) Close
 
 ```go
 func (r *RedisStore) Close() error
@@ -207,7 +207,7 @@ func (r *RedisStore) Close() error
 Close closes the Redis connection pool. It is important to call this when shutting down the application.
 
 <a name="RedisStore.Delete"></a>
-### func \(\*RedisStore\) [Delete](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L89>)
+### func \(\*RedisStore\) Delete
 
 ```go
 func (r *RedisStore) Delete(ctx context.Context, key string) error
@@ -216,7 +216,7 @@ func (r *RedisStore) Delete(ctx context.Context, key string) error
 Delete removes a specific entry from Redis immediately.
 
 <a name="RedisStore.Get"></a>
-### func \(\*RedisStore\) [Get](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L63>)
+### func \(\*RedisStore\) Get
 
 ```go
 func (r *RedisStore) Get(ctx context.Context, key string) (*Entry, error)
@@ -225,7 +225,7 @@ func (r *RedisStore) Get(ctx context.Context, key string) (*Entry, error)
 Get retrieves a cached Entry by its key from Redis. Returns ErrNotFound if the key does not exist or has expired.
 
 <a name="RedisStore.Lock"></a>
-### func \(\*RedisStore\) [Lock](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L96>)
+### func \(\*RedisStore\) Lock
 
 ```go
 func (r *RedisStore) Lock(ctx context.Context, key string, ttl time.Duration) (bool, error)
@@ -234,7 +234,7 @@ func (r *RedisStore) Lock(ctx context.Context, key string, ttl time.Duration) (b
 Lock attempts to acquire a distributed lock for a given key using SET NX. This is atomic and prevents race conditions in distributed environments. Returns true if the lock was successfully acquired.
 
 <a name="RedisStore.Save"></a>
-### func \(\*RedisStore\) [Save](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L80>)
+### func \(\*RedisStore\) Save
 
 ```go
 func (r *RedisStore) Save(ctx context.Context, key string, entry *Entry, ttl time.Duration) error
@@ -243,7 +243,7 @@ func (r *RedisStore) Save(ctx context.Context, key string, entry *Entry, ttl tim
 Save persists an Entry into Redis with a specific time\-to\-live \(TTL\).
 
 <a name="RedisStore.Unlock"></a>
-### func \(\*RedisStore\) [Unlock](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L102>)
+### func \(\*RedisStore\) Unlock
 
 ```go
 func (r *RedisStore) Unlock(ctx context.Context, key string) error
@@ -252,7 +252,7 @@ func (r *RedisStore) Unlock(ctx context.Context, key string) error
 Unlock releases the lock for the given key.
 
 <a name="RedisStoreOptions"></a>
-## type [RedisStoreOptions](<https://github.com/its-ernest/echox/blob/main/store/redis.go#L19-L36>)
+## type RedisStoreOptions
 
 RedisStoreOptions provides configuration options for RedisStore.
 
@@ -278,7 +278,7 @@ type RedisStoreOptions struct {
 ```
 
 <a name="Store"></a>
-## type [Store](<https://github.com/its-ernest/echox/blob/main/store/store.go#L29-L44>)
+## type Store
 
 Store defines the contract for any backend \(Memory, Redis, etc.\)
 
