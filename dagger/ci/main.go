@@ -18,7 +18,7 @@ func main() {
 
 	// 1. Get the project source
 	src := client.Host().Directory(".", dagger.HostDirectoryOpts{
-		Exclude: []string{".git", "bin", "obj"},
+		Exclude: []string{".git", ".github", "dagger"},
 	})
 
 	// 2. Define the Go execution environment
@@ -32,7 +32,7 @@ func main() {
 	// 3. Run the Tests
 	fmt.Println("Running unit tests...")
 	_, err = gopher.
-		//WithExec([]string{"go", "test", "-v", "-race", "./..."}).
+		WithExec([]string{"go", "mod", "tidy"}).
 		WithExec([]string{"go", "test", "-v", "-race", "./..."}).
 		Sync(ctx)
 

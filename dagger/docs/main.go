@@ -14,7 +14,9 @@ func main() {
 
 	// 1. Get the source code
 	src := client.Host().Directory(".", dagger.HostDirectoryOpts{
-		Exclude: []string{".git", "bin", "obj"},
+		Exclude: []string{".git", "bin", "obj",
+			"dagger", ".github", "_examples",
+		},
 	})
 
 	// 2. Build a container with Go installed
@@ -27,9 +29,6 @@ func main() {
 		WithExec([]string{"ls"}).
 		// 4. Run the generation
 		WithExec([]string{"gomarkdoc",
-			"--exclude-dirs", "./dagger",
-			"--exclude-dirs", "./cache/_examples/otp_code_verification",
-			"--exclude-dirs", "./github",
 			"-o", "{{.Dir}}/DOCS.md",
 			"./...",
 		})
