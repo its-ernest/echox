@@ -14,7 +14,7 @@ import "github.com/its-ernest/echox/cache"
 
 
 <a name="DefaultKeyGenerator"></a>
-## func DefaultKeyGenerator
+## func [DefaultKeyGenerator](<https://github.com/its-ernest/echox/blob/main/cache/config.go#L25>)
 
 ```go
 func DefaultKeyGenerator(c *echo.Context) string
@@ -23,7 +23,7 @@ func DefaultKeyGenerator(c *echo.Context) string
 DefaultKeyGenerator generates a cache key based on method \+ URL
 
 <a name="New"></a>
-## func New
+## func [New](<https://github.com/its-ernest/echox/blob/main/cache/middleware.go#L16>)
 
 ```go
 func New(config Config) echo.MiddlewareFunc
@@ -32,7 +32,7 @@ func New(config Config) echo.MiddlewareFunc
 
 
 <a name="Config"></a>
-## type Config
+## type [Config](<https://github.com/its-ernest/echox/blob/main/cache/config.go#L11-L22>)
 
 
 

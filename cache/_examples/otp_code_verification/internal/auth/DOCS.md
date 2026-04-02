@@ -14,7 +14,7 @@ import "otp-backend/internal/auth"
 
 
 <a name="Handler"></a>
-## type Handler
+## type [Handler](<https://github.com/its-ernest/echox/blob/main/cache/_examples/otp_code_verification/internal/auth/handler.go#L16-L19>)
 
 
 
@@ -25,7 +25,7 @@ type Handler struct {
 ```
 
 <a name="NewHandler"></a>
-### func NewHandler
+### func [NewHandler](<https://github.com/its-ernest/echox/blob/main/cache/_examples/otp_code_verification/internal/auth/handler.go#L21>)
 
 ```go
 func NewHandler(s *service.AuthService, secret []byte) *Handler
@@ -34,7 +34,7 @@ func NewHandler(s *service.AuthService, secret []byte) *Handler
 
 
 <a name="Handler.Register"></a>
-### func \(\*Handler\) Register
+### func \(\*Handler\) [Register](<https://github.com/its-ernest/echox/blob/main/cache/_examples/otp_code_verification/internal/auth/handler.go#L37>)
 
 ```go
 func (h *Handler) Register(g *echo.Group, store store.Store)
