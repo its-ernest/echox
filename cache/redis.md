@@ -21,7 +21,7 @@ type Store interface {
 
 ### 2. Modern RedisStore Implementation
 
-We use `github.com/redis/go-redis/v9` for its native support for context and modern Redis features.
+We recommend to use `github.com/redis/go-redis/v9` for its native support for context and modern Redis features.
 
 ```go
 package store
@@ -106,8 +106,6 @@ e.Use(cache.New(cache.Config{
 
 ---
 
-### 4. Production Engineering Notes
+### 4. Recommendations
 
-* **Atomic Locking:** By using `SetNX` on a dedicated `"lock:"` prefix, you ensure that even with 100 servers, only **one** will ever execute the expensive database query on a cache miss.
-* **Serialization Overhead:** Redis requires JSON/Binary marshaling. For massive payloads, ensure your `MaxBodySize` is tuned to prevent high memory usage on the Redis node.
 * **Fail-Soft Logic:** In a real production environment, you might want to wrap `RedisStore` so that if Redis is down, the middleware simply skips the cache instead of returning an error to the user.
