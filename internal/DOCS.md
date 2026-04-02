@@ -16,7 +16,7 @@ import "github.com/its-ernest/echox/internal"
 
 
 <a name="ResponseRecorder"></a>
-## type ResponseRecorder
+## type [ResponseRecorder](<https://github.com/its-ernest/echox/blob/main/internal/recorder.go#L10-L15>)
 
 ResponseRecorder captures response data for caching or idempotency storage.
 
@@ -30,7 +30,7 @@ type ResponseRecorder struct {
 ```
 
 <a name="NewResponseRecorder"></a>
-### func NewResponseRecorder
+### func [NewResponseRecorder](<https://github.com/its-ernest/echox/blob/main/internal/recorder.go#L17>)
 
 ```go
 func NewResponseRecorder(w http.ResponseWriter) *ResponseRecorder
@@ -39,7 +39,7 @@ func NewResponseRecorder(w http.ResponseWriter) *ResponseRecorder
 
 
 <a name="ResponseRecorder.Flush"></a>
-### func \(\*ResponseRecorder\) Flush
+### func \(\*ResponseRecorder\) [Flush](<https://github.com/its-ernest/echox/blob/main/internal/recorder.go#L43>)
 
 ```go
 func (r *ResponseRecorder) Flush()
@@ -48,7 +48,7 @@ func (r *ResponseRecorder) Flush()
 Flush implementation for buffered underlying writers \(important for HTTP/2\)
 
 <a name="ResponseRecorder.Write"></a>
-### func \(\*ResponseRecorder\) Write
+### func \(\*ResponseRecorder\) [Write](<https://github.com/its-ernest/echox/blob/main/internal/recorder.go#L34>)
 
 ```go
 func (r *ResponseRecorder) Write(b []byte) (int, error)
@@ -57,7 +57,7 @@ func (r *ResponseRecorder) Write(b []byte) (int, error)
 
 
 <a name="ResponseRecorder.WriteHeader"></a>
-### func \(\*ResponseRecorder\) WriteHeader
+### func \(\*ResponseRecorder\) [WriteHeader](<https://github.com/its-ernest/echox/blob/main/internal/recorder.go#L25>)
 
 ```go
 func (r *ResponseRecorder) WriteHeader(code int)
