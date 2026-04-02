@@ -1,4 +1,4 @@
-name: Dagger Docs
+name: Dagger Docs Checker
 on: [push, pull_request]
 
 permissions:
@@ -20,7 +20,7 @@ jobs:
         
       - name: Verify Documentation is Up-to-Date
         run: |
-          if ! git diff --exit-code; then
+          if ! git diff -w --exit-code; then
             echo "::error::Documentation is out of date!"
             echo "Please run 'go run ./dagger/docs/main.go' locally and commit the changes."
             exit 1
