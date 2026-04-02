@@ -10,6 +10,7 @@
 
 `echox` is a collection of production-ready middlewares engineered specifically for Echo v5's struct-pointer architecture. By leveraging Go 1.24+ features and standard library interfaces, `echox` provides robust solutions for distributed caching, idempotency, and request lifecycle management.
 
+
 ## Installation
 
 ```bash
@@ -22,7 +23,7 @@ GOPROXY=direct go get github.com/its-ernest/echox/abuse@latest
 go get github.com/its-ernest/echox/cache
 ```
 
-## <i class="fas fa-layer-group"></i> Framework Compatibility
+## Framework Compatibility
 
 To ensure stability across the evolving Echo v5 landscape, we maintain specific versions mapped to upstream Echo releases.
 
@@ -39,10 +40,18 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 | **[`echox/abuse`](abuse/README.md)** | API abuse detection | `Beta` | <i class="fas fa-hourglass-start"></i> Memory. <br> Redis (`in progress`). |
 
 
-## <i class="fas fa-terminal"></i> Requirements
+## Requirements
 
 * **Go:** 1.25+
 * **Echo:** v5.0.0 or higher
+
+
+## To Contribute
+
+- Read [CONTRIBUTION.md](CONTRIBUTING.md)
+- Contributing on cache middleware: [cache/README.md](cache/README.md)
+- Contributing on API abuse middleware: [abuse/README.md](abuse/README.md)
+
 
 ## MINI PROJECTS EXAMPLES: 
 
@@ -159,6 +168,7 @@ func main() {
 }
 ```
 
+
 ### Abuse Detection examples
 ```go
 import (
@@ -199,6 +209,16 @@ func main() {
 	}
 }
 ```
+
+
+## Contributors
+
+<a href="https://github.com/its-ernest/echox/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=its-ernest/echox" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 
 ##  License
 
