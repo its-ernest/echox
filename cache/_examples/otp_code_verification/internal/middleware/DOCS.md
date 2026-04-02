@@ -12,7 +12,7 @@ import "otp-backend/internal/middleware"
 
 
 <a name="OTPCache"></a>
-## func [OTPCache](<https://github.com/its-ernest/echox/blob/main/cache/_examples/otp_code_verification/internal/middleware/otpcache.go#L12>)
+## func OTPCache
 
 ```go
 func OTPCache(store store.Store) echo.MiddlewareFunc

@@ -19,7 +19,7 @@ jobs:
       - name: Verify Go Modules are Tidy
         run: |
           go mod tidy
-          if ! git diff --exit-code go.mod go.sum; then
+          if ! git diff -w --exit-code go.mod go.sum; then
             echo "::error::Go modules are not tidy! Please run 'go mod tidy' locally."
             exit 1
           fi

@@ -31,7 +31,7 @@ var DefaultConfig = Config{
 ```
 
 <a name="New"></a>
-## func [New](<https://github.com/its-ernest/echox/blob/main/abuse/middleware.go#L49>)
+## func New
 
 ```go
 func New(config Config) echo.MiddlewareFunc
@@ -67,7 +67,7 @@ e.Use(abuse.New(abuse.Config{
 </details>
 
 <a name="Config"></a>
-## type [Config](<https://github.com/its-ernest/echox/blob/main/abuse/middleware.go#L28-L36>)
+## type Config
 
 Config defines the settings for the abuse detection middleware.
 
@@ -84,7 +84,7 @@ type Config struct {
 ```
 
 <a name="Rule"></a>
-## type [Rule](<https://github.com/its-ernest/echox/blob/main/abuse/middleware.go#L16-L25>)
+## type Rule
 
 Rule defines the "heat" points added for specific path patterns. Pattern supports suffix wildcards like "/admin\*".
 
