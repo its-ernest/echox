@@ -26,7 +26,6 @@ func main() {
 		WithWorkdir("/src").
 		// 3. Install gomarkdoc
 		WithExec([]string{"go", "install", "github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest"}).
-		WithExec([]string{"ls"}).
 		// 4. Run the generation
 		WithExec([]string{"gomarkdoc",
 			"-o", "{{.Dir}}/DOCS.md",

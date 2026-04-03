@@ -2,7 +2,7 @@
 
 First off, thank you for considering contributing to `echox`! It is through developers like you that this tool becomes better for the entire Echo community.
 
-## <i class="fas fa-code-branch"></i> Versioning Policy
+## Versioning Policy
 
 `echox` follows Semantic Versioning (SemVer) and tracks Echo v5 releases closely.
 
@@ -12,14 +12,20 @@ First off, thank you for considering contributing to `echox`! It is through deve
 ## <i class="fas fa-tasks"></i> Development Workflow
 
 1. **Fork the Repository:** Create your own fork and clone it locally.
-2. **Environment:** Ensure you are using **Go 1.24+**.
-3. **Directory Structure:** - New middlewares go in their own top-level directory (e.g., `ratelimit/`).
+2. **Environment:** Ensure you are using **Go 1.25+**.
+3. **Directory Structure:** - New middlewares go in their own top-level directory (e.g., `cache/`).
    - Shared logic (like new store types) goes in `internal/store/`.
 4. **Testing:** All new features must include unit tests.
    ```bash
+   # use local testing
+   gomarkdown -o {{.Dir}}/DOCS.md ./...
    go test -v ./...
 
-    ```
+   # or use dagger testing
+   go run ./dagger/docs/main.go
+   go run ./dagger/ci/main.go
+   ```
+
 
 ##  Pull Request Guidelines
 
