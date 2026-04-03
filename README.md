@@ -36,8 +36,9 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 
 | Module | Purpose | Status | Backend Support |
 | :--- | :--- | :--- | :--- |
-| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | <i class="fas fa-check-circle" style="color:green"></i> Memory. <br> <i class="fas fa-check-circle" style="color:green"></i> Redis. |
-| **[`echox/abuse`](abuse/README.md)** | API abuse detection | `Beta` | <i class="fas fa-hourglass-start"></i> Memory. <br> Redis (`in progress`). |
+| **[`echox/cache`](cache/README.md)** | RFC-compliant HTTP caching | `Stable` | - `Memory`. <br> - `Redis`. |
+| **[`echox/abuse`](abuse/README.md)** | API abuse detection | `Stable` | - `Memory`. <br> `Redis`. |
+| **[`echox/steady`](steady/README.md)** | Concurrency limit and backpressure | `Beta` | `Channel-based`|
 
 
 ## Requirements
@@ -51,30 +52,19 @@ To ensure stability across the evolving Echo v5 landscape, we maintain specific 
 - Read [CONTRIBUTION.md](CONTRIBUTING.md)
 - Contributing on cache middleware: [cache/README.md](cache/README.md)
 - Contributing on API abuse middleware: [abuse/README.md](abuse/README.md)
-
+- Contributing on Steady/Semaphore middleware: [steady/README.md](steady/README.md)
 
 ## MINI PROJECTS EXAMPLES: 
 
 * **OTP verification caching (MemoryStore)**: [_examples/cache/otp_code_verification](_examples/cache/otp_code_verification/README.md)
 
 
-## <i class="fas fa-play-circle"></i> Quick Start examples
+## Quick Start examples
 ### 1. Caching examples
 
 ```go
-package main
 
-import (
-	"fmt"
-	"net/http"
-	"time"
-
-	"github.com/labstack/echo/v5"
-	"github.com/its-ernest/echox/cache" 
-	"github.com/its-ernest/echox/store"
-)
-
-func main() {
+	// ... 
 	e := echo.New()
 
 	// MINI CUSTOM LOGGER
@@ -108,12 +98,7 @@ func main() {
 		timestamp := time.Now().Format(time.RFC3339Nano)
 		return c.String(http.StatusOK, fmt.Sprintf("Generated at: %s", timestamp))
 	})
-
-	fmt.Println("Starting Dev Server on :8080...")
-	if err := e.Start(":8080"); err != nil {
-		fmt.Printf("Server stopped: %v\n", err)
-	}
-}
+	// rest of code...
 ```
 
 ### 2. Using Redis for Distributed Caching
@@ -121,19 +106,7 @@ func main() {
 For production environments with multiple application instances, use RedisStore:
 
 ```go
-package main
-
-import (
-	"fmt"
-	"net/http"
-	"time"
-
-	"github.com/labstack/echo/v5"
-	"github.com/its-ernest/echox/cache" 
-	"github.com/its-ernest/echox/store"
-)
-
-func main() {
+	// ...
 	e := echo.New()
 
 	// setup Redis store for distributed caching
@@ -160,29 +133,13 @@ func main() {
 		timestamp := time.Now().Format(time.RFC3339Nano)
 		return c.String(http.StatusOK, fmt.Sprintf("Generated at: %s", timestamp))
 	})
-
-	fmt.Println("Starting Dev Server on :8080...")
-	if err := e.Start(":8080"); err != nil {
-		fmt.Printf("Server stopped: %v\n", err)
-	}
-}
+	// rest ofo code...
 ```
 
 
 ### Abuse Detection examples
 ```go
-import (
-	"fmt"
-	"net/http"
-	"time"
-
-	"github.com/labstack/echo/v5"
-	"github.com/its-ernest/echox/cache" 
-	"github.com/its-ernest/echox/abuse"
-	"github.com/its-ernest/echox/store"
-)
-
-func main() {
+	// ...
 	e := echo.New()
 
 	abuseStore := store.NewMemoryCounter()
@@ -202,12 +159,23 @@ func main() {
 			{Path: "/api/v1/users", Method: "PUT", Score: 20},
 		},
 	}))
+	// rest of code...
+```
 
-	fmt.Println("Starting Dev Server on :8080...")
-	if err := e.Start(":8080"); err != nil {
-		fmt.Printf("Server stopped: %v\n", err)
-	}
-}
+### Concurrency Limiting examples
+```go
+	// ...
+	e := echo.New()
+
+	e.Use(steady.New(steady.Config{
+		MaxConcurrent: 50,               // Allow 50 simultaneous requests
+		WaitTimeout:   10 * time.Second, // Wait up to 10s for a slot
+	}))
+
+	e.GET("/", func(c *echo.Context) error {
+		return c.String(http.StatusOK, "Stable and Steady!")
+	})
+	// rest of code...
 ```
 
 
