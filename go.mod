@@ -35,3 +35,5 @@ require (
 	golang.org/x/time v0.14.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+retract v0.1.1 // Published with incorrect versioning; use v0.0.5 instead.
