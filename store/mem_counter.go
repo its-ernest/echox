@@ -12,6 +12,7 @@ type memoryCounter struct {
 	expiries map[string]time.Time
 }
 
+// NewMemoryCounter returns a new thread-safe memory-based Counter.
 func NewMemoryCounter() Counter {
 	return &memoryCounter{
 		counts:   make(map[string]int),

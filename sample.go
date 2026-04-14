@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/labstack/echo/v5"
-	"github.com/its-ernest/echox/cache" 
+	"github.com/its-ernest/echox/cache"
 	"github.com/its-ernest/echox/store"
+	"github.com/labstack/echo/v5"
 )
 
 func main() {
@@ -19,9 +19,9 @@ func main() {
 			start := time.Now()
 			err := next(c)
 			stop := time.Now()
-			fmt.Printf("[%s] %s %s (%s)\n", 
+			fmt.Printf("[%s] %s %s (%s)\n",
 				stop.Format("15:04:05"),
-				c.Request().Method, 
+				c.Request().Method,
 				c.Request().URL.Path,
 				stop.Sub(start),
 			)

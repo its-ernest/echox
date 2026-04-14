@@ -13,6 +13,7 @@ import (
 	"github.com/labstack/echo/v5"
 )
 
+// New returns an Echo middleware for caching HTTP responses.
 func New(config Config) echo.MiddlewareFunc {
 	// Defaults & sanity checks
 	if config.Store == nil {
