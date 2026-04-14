@@ -36,6 +36,7 @@ type (
 	}
 )
 
+// DefaultConfig provides the standard settings for abuse detection middleware.
 var DefaultConfig = Config{
 	Threshold: 100,
 	Cooldown:  30 * time.Minute,

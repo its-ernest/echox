@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-// ResponseRecorder captures response data for caching or idempotency storage.
+// ResponseRecorder captures response data for caching or idempotency storage
 type ResponseRecorder struct {
 	http.ResponseWriter
 	Status    int
