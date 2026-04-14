@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/v5"
 )
 
+// Config structure for echox/cache middleware
 type Config struct {
 	Store        store.Store
 	TTL          time.Duration
@@ -15,10 +16,10 @@ type Config struct {
 	KeyGenerator func(c *echo.Context) string
 
 	// MaxBodySize prevents caching of massive responses (default 1MB)
-	MaxBodySize  int
-	
-	RetryDelay   time.Duration
-	MaxRetries   int
+	MaxBodySize int
+
+	RetryDelay time.Duration
+	MaxRetries int
 }
 
 // DefaultKeyGenerator generates a cache key based on method + URL

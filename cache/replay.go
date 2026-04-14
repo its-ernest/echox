@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v5"
 )
 
+// replay implementation
 func replay(c *echo.Context, entry *store.Entry) error {
 	// 1.cast map to http.Header for .Get() capability
 	headers := http.Header(entry.Header)
@@ -27,7 +28,7 @@ func replay(c *echo.Context, entry *store.Entry) error {
 
 	c.Response().Header().Set("X-Cache", "HIT")
 
-	// Ensure we provide a Content-Type or use the cached one
+	// Ensure Content-Type is provided or use the cached one
 	contentType := headers.Get("Content-Type")
 	if contentType == "" {
 		contentType = "application/octet-stream"

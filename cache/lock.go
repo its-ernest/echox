@@ -18,8 +18,5 @@ func acquireLockWithTTL(ctx context.Context, s store.Store, key string, ttl time
 		_ = s.Unlock(ctx, key)
 	}
 
-	// Optional: automatic TTL expiration using background goroutine
-	// Could implement if store.Lock supports TTL expiration
-
 	return true, unlockFn
 }

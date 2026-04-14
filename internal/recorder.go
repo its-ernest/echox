@@ -9,11 +9,12 @@ import (
 // ResponseRecorder captures response data for caching or idempotency storage.
 type ResponseRecorder struct {
 	http.ResponseWriter
-	Status      int
-	Body        *bytes.Buffer
-	Committed   bool
+	Status    int
+	Body      *bytes.Buffer
+	Committed bool
 }
 
+// NewResponseRecorder creates a new ResponseRecorder wrapping the given http.ResponseWriter.
 func NewResponseRecorder(w http.ResponseWriter) *ResponseRecorder {
 	return &ResponseRecorder{
 		ResponseWriter: w,
@@ -22,6 +23,7 @@ func NewResponseRecorder(w http.ResponseWriter) *ResponseRecorder {
 	}
 }
 
+// WriteHeader captures the status code and writes it to the underlying ResponseWriter.
 func (r *ResponseRecorder) WriteHeader(code int) {
 	if r.Committed {
 		return
@@ -31,6 +33,7 @@ func (r *ResponseRecorder) WriteHeader(code int) {
 	r.Committed = true
 }
 
+// Write captures the response body and writes it to the underlying ResponseWriter.
 func (r *ResponseRecorder) Write(b []byte) (int, error) {
 	if !r.Committed {
 		r.WriteHeader(http.StatusOK)
