@@ -3,12 +3,12 @@ package service
 import (
 	"context"
 	"errors"
-	"time"
-	"log"
 	"fmt"
+	"log"
+	"time"
 
-	"otp-backend/internal/utils"
 	"github.com/its-ernest/echox/store"
+	"otp-backend/internal/utils"
 )
 
 type AuthService struct {
@@ -38,7 +38,7 @@ func (s *AuthService) VerifyOTP(ctx context.Context, phone, code string) error {
 	}
 
 	if string(entry.Body) != code {
-		return errors.New("invalid otp: original: "+string(entry.Body))
+		return errors.New("invalid otp: original: " + string(entry.Body))
 	}
 
 	// delete otp after verification to free memory
